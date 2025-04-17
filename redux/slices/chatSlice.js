@@ -8,7 +8,7 @@ export const fetchChats = createAsyncThunk("chat/fetchChats", async () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
-  console.log(response.data)
+  
   return response.data;
 });
 
