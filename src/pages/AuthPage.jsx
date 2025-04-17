@@ -54,7 +54,6 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="page">
       <Container maxWidth="md" sx={{ py: 14, display: "flex", justifyContent: "center", height: "100vh",flexDirection:"column", alignItems:"center" }}>
         <Typography variant="h2" sx={{pb:2, fontWeight:"600"}} className="title">GameGPT </Typography>
         <Typography variant="h4" sx={{pb:4}}>Ассистент в подборе игр</Typography>
@@ -133,6 +132,6 @@ export default function AuthPage() {
           </form>
         </Box>
       </Container>
-    </div>
+
   );
 }
