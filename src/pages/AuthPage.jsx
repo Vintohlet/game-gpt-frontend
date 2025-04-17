@@ -55,7 +55,9 @@ export default function AuthPage() {
 
   return (
     <div className="page">
-      <Container maxWidth="md" sx={{ py: 14, display: "flex", justifyContent: "center", height: "100vh" }}>
+      <Container maxWidth="md" sx={{ py: 14, display: "flex", justifyContent: "center", height: "100vh",flexDirection:"column", alignItems:"center" }}>
+        <Typography variant="h2" sx={{pb:2, fontWeight:"600"}} className="title">GameGPT </Typography>
+        <Typography variant="h4" sx={{pb:4}}>Ассистент в подборе игр</Typography>
         <Box sx={{ backgroundColor: "#424549", py: 4, px: 8, borderRadius: 3, width:"480px", textAlign:"center", display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column" }}>
           <Typography variant="h4" sx={{ color: "white" }}>
             {isLogin ? "Войти" : "Регистрация"}
