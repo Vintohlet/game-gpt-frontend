@@ -7,7 +7,7 @@ export default function MessageBubble({ sender, text }) {
     <Box sx={{ display: "flex", justifyContent: isUser ? "flex-end" : "flex-start" }}>
       <Box
         sx={{
-          backgroundColor: isUser ? "#7289da" : "#99aab5",
+          backgroundColor: isUser ? "#7289da" : "#737e85",
           color: "white",
           px: 2,
           py: 1,
