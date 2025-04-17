@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography, CircularProgress } from "@mui/material";
 import ChatHistory from "../components/ChatHistory";
 import ChatPanel from "../components/ChatPanel";
 import MessageBubble from "../components/MessageBubble";
 import { axiosInstance } from "../../services/axios";
-import {CircularProgress }from "@mui/material";
+
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [generating, setGenerating] = useState(false);
@@ -13,10 +13,12 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!activeChat || !localStorage.getItem("token")) return;
+    if (!activeChat || !localStorage.getItem("token")) {
+      setMessages([]); 
+      return;
+    }
 
     const fetchMessages = async () => {
-     
       setLoading(true);
       try {
         const response = await axiosInstance.get(`/chat/${activeChat}`, {
@@ -24,9 +26,10 @@ export default function ChatPage() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        setMessages(response.data.messages);
+        setMessages(response.data?.messages || []); 
       } catch (error) {
         console.error("Ошибка загрузки сообщений", error);
+        setMessages([]); 
       } finally {
         setLoading(false);
       }
@@ -46,21 +49,14 @@ export default function ChatPage() {
     try {
       const response = await axiosInstance.post(
         "/messages",
-        {
-          chatId: activeChat,
-          userMessage: input,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+        { chatId: activeChat, userMessage: input },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
       const assistantMessage = {
         id: Date.now() + 1,
         sender: "assistant",
-        text: response.data.assistantMessage,
+        text: response.data?.assistantMessage || "Произошла ошибка при обращении к модели.",
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
@@ -114,54 +110,48 @@ export default function ChatPage() {
               height: "100%",
             }}
           >
-             <CircularProgress color="secondary" size={32} />
+            <CircularProgress color="secondary" size={32} />
           </Box>
         ) : (
-          <>
-            <Box
-              sx={{
-                flex: 1,
-                overflowY: "auto",
-                mb: 2,
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-              }}
-            >
-              {messages.length === 0 ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100%",
-                  }}
-                >
-                  <Typography>Нет сообщений. Начните общение!</Typography>
-                </Box>
-              ) : (
-                messages.map((msg) => (
-                  <MessageBubble
-                    key={msg.id || msg._id}
-                    sender={msg.sender}
-                    text={msg.text}
-                  />
-                ))
-              )}
-              {generating && (
-                <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
-                  <CircularProgress color="secondary" size={32} />
-                </Box>
-              )}
-            </Box>
-            <ChatPanel
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onSend={handleSendMessage}
-              disabled={!activeChat}
-            />
-          </>
+          <Box
+            sx={{
+              flex: 1,
+              overflowY: "auto",
+              mb: 2,
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
+            {messages && messages.length === 0 ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <Typography>Нет сообщений. Начните общение!</Typography>
+              </Box>
+            ) : (
+              messages && messages.map((msg) => (
+                <MessageBubble key={msg.id || msg._id} sender={msg.sender} text={msg.text} />
+              ))
+            )}
+            {generating && (
+              <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+                <CircularProgress color="secondary" size={32} />
+              </Box>
+            )}
+          </Box>
         )}
+        <ChatPanel
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onSend={handleSendMessage}
+          disabled={!activeChat}
+        />
       </Box>
     </Container>
   );
