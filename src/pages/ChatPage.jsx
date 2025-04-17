@@ -95,7 +95,8 @@ export default function ChatPage() {
   };
 
   return (
-    <Container
+    <div className="page">
+      <Container
       maxWidth="lg"
       sx={{
         height: "100vh",
@@ -243,5 +244,6 @@ export default function ChatPage() {
         />
       </Box>
     </Container>
+    </div>
   );
 }
