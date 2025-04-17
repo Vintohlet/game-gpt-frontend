@@ -18,7 +18,7 @@ import { deleteChat } from "../../redux/slices/chatSlice";
 export default function ChatHistory({ activeChat, setActiveChat }) {
   const dispatch = useDispatch();
   const { chats, loading } = useSelector((state) => state.chat);
- 
+ console.log(chats)
   const activeChatRef = useRef(activeChat);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { IoLogOut } from "react-icons/io5";
 import { logout } from "../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import { axiosInstance } from "../../services/axios";
 import { fetchChats } from "../../redux/slices/chatSlice"; // предполагается, что такой action есть
 
 export default function ChatManagement() {
@@ -23,7 +23,7 @@ export default function ChatManagement() {
     if (!chatName.trim()) return;
 
     try {
-      await axios.post(
+      await axiosInstance.post(
         "/chat",
         { chatName },
         {

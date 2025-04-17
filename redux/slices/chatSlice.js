@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { axiosInstance } from "../../services/axios";
 
 
 export const fetchChats = createAsyncThunk("chat/fetchChats", async () => {
-  const response = await axios.get("/chat", {
+  const response = await axiosInstance.get("/chat", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
@@ -17,7 +17,7 @@ export const deleteChat = createAsyncThunk(
   "chat/deleteChat",
   async (chatId, thunkAPI) => {
     try {
-      await axios.delete(`/chat/${chatId}`, {
+      await axiosInstance.delete(`/chat/${chatId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
