@@ -49,7 +49,7 @@ export default function ChatHistory({ activeChat, setActiveChat }) {
   return (
     <Box
       sx={{
-        width: "25%",
+       
         backgroundColor: "#2c2f33",
         borderRadius: 2,
         p: 2,
